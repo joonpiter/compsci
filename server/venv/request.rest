@@ -1,5 +1,5 @@
 
-POSThttp:http://127.0.0.1:8000/login
+POST http://127.0.0.1:8000/login
 Content-Type: application/json
 
 {

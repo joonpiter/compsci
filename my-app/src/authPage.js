@@ -1,58 +1,58 @@
-import { useState } from "react";
-import axios from "axios";
+import { useState } from "react"; // import the 'useState' hook from the React library
+import axios from "axios"; // import the 'axios' library for making HTTP requests
 
-const AuthPage = (props) => {
-  const [username, setUsername] = useState();
+const AuthPage = (props) => { // define the 'AuthPage' component that takes in 'props' as an argument
+  const [username, setUsername] = useState(); // create state variables for 'username', 'secret', 'email', 'first_name', and 'last_name'
   const [secret, setSecret] = useState();
   const [email, setEmail] = useState();
   const [first_name, setFirstName] = useState();
   const [last_name, setLastName] = useState();
 
-  const onLogin = (e) => {
-    e.preventDefault();
-    axios
-      .post("http://127.0.0.1:8000/login", { username, secret })
-      .then((r) => props.onAuth({ ...r.data, secret })) // NOTE: over-ride secret
-      .catch((e) => console.log(JSON.stringify(e.response.data)));
+  const onLogin = (e) => { // define a function 'onLogin' that takes in an event 'e' as an argument
+    e.preventDefault(); // prevent the default form submission behavior
+    axios // make an HTTP POST request using 'axios'
+      .post("http://127.0.0.1:8000/login", { username, secret }) // to the specified URL with the 'username' and 'secret' as the request payload
+      .then((r) => props.onAuth({ ...r.data, secret })) // if the request is successful, call the 'onAuth' function passed in as a prop and pass in the response data and 'secret' as an object
+      .catch((e) => console.log(JSON.stringify(e.response.data))); // if there's an error, log the error message to the console
   };
 
-  const onSignup = (e) => {
-    e.preventDefault();
-    axios
-      .post("http://127.0.0.1:8000/signup", {
+  const onSignup = (e) => { // define a function 'onSignup' that takes in an event 'e' as an argument
+    e.preventDefault(); // prevent the default form submission behavior
+    axios // make an HTTP POST request using 'axios'
+      .post("http://127.0.0.1:8000/signup", { // to the specified URL with the 'username', 'secret', 'email', 'first_name', and 'last_name' as the request payload
         username,
         secret,
         email,
         first_name,
         last_name,
       })
-      .then((r) => props.onAuth({ ...r.data, secret })) // NOTE: over-ride secret
-      .catch((e) => console.log(JSON.stringify(e.response.data)));
+      .then((r) => props.onAuth({ ...r.data, secret })) // if the request is successful, call the 'onAuth' function passed in as a prop and pass in the response data and 'secret' as an object
+      .catch((e) => console.log(JSON.stringify(e.response.data))); // if there's an error, log the error message to the console
   };
 
-  return (
+  return ( // return the JSX markup for the login and sign up forms
     <div className="login-page">
       <div className="card">
         {/* Login Form */}
-        <form onSubmit={onLogin}>
+        <form onSubmit={onLogin}> // define the login form and attach the 'onLogin' function to the form's 'onSubmit' event
           <div className="title">Login</div>
           <input
             type="text"
             name="username"
             placeholder="Username"
-            onChange={(e) => setUsername(e.target.value)}
+            onChange={(e) => setUsername(e.target.value)} // set the 'username' state variable to the value of the input field whenever it changes
           />
           <input
             type="password"
             name="secret"
             placeholder="Password"
-            onChange={(e) => setSecret(e.target.value)}
+            onChange={(e) => setSecret(e.target.value)} // set the 'secret' state variable to the value of the input field whenever it changes
           />
           <button type="submit">LOG IN</button>
         </form>
 
         {/* Sign Up Form */}
-        <form onSubmit={onSignup}>
+        <form onSubmit={onSignup}>`
           <div className="title">or Sign Up</div>
           <input
             type="text"

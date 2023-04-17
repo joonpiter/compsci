@@ -7,7 +7,24 @@ from typing import Union
 
 import requests
 
+# how to start server 
+# open new terminal
+# write the following prompts in the terminal in this order
+# cd  my-app
+# npm run start
+
+# How to start front end 
+# open new terminal
+# write the following prompts in the terminal in this order
+# cd server
+# cd venv
+# python -m uvicorn main:app --reload
+
+
+# import FastAPI framework
 app = FastAPI()
+
+# add Cross-Origin Resource Sharing middleware to the application
 app.add_middleware(
     CORSMiddleware,
     allow_origins=["*"],
@@ -16,9 +33,11 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
+# define constants for the project ID and private key
 PROJECT_ID = "cffce686-2385-45fd-b88d-a85e61a209d4"
 PRIVATE_KEY = "10ab7e80-5360-4406-95cf-81ed55252255"
 
+# define a user data model with several fields
 class User(BaseModel):
     username: str
     secret: str
@@ -26,8 +45,10 @@ class User(BaseModel):
     first_name: Union[str, None] = None
     last_name: Union[str, None] = None
 
+# define an HTTP POST endpoint for user login
 @app.post('/login/')
 async def root(user: User):
+    # make an HTTP GET request to the ChatEngine API using the provided user data
     response = requests.get('https://api.chatengine.io/users/me/', 
         headers={ 
             "Project-ID": PROJECT_ID,
@@ -35,10 +56,13 @@ async def root(user: User):
             "User-Secret": user.secret
         }
     )
+    # return the response as JSON data
     return response.json()
 
+# define an HTTP POST endpoint for user signup
 @app.post('/signup/')
 async def root(user: User):
+    # make an HTTP POST request to the ChatEngine API using the provided user data
     response = requests.post('https://api.chatengine.io/users/', 
         data={
             "username": user.username,
@@ -49,10 +73,7 @@ async def root(user: User):
         },
         headers={ "Private-Key": PRIVATE_KEY }
     )
+    # return the response as JSON data
     return response.json()
 
-# python3 -m venv venv
-# source venv/bin/activate
-# pip install --upgrade pip
-# pip install -r requirements.txt
-# uvicorn main:app --reload --port 3001
+
